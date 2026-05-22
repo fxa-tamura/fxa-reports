@@ -15,6 +15,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from io import BytesIO
 from django.core.mail import EmailMessage
+from urllib.parse import quote
 
 # ReportLab
 import os
@@ -152,7 +153,7 @@ def build_report_pdf(report):
 
     body_table = Table(
         body_data,
-        colWidths=[20 * mm, 45 * mm, 115 * mm],
+        colWidths=[20 * mm, 30 * mm, 130 * mm],
         rowHeights=[None, 22 * mm, None, None, None, None, None, 45 * mm]
     )
     body_table.setStyle(TableStyle([
@@ -342,7 +343,13 @@ def report_pdf(request, pk):
     report = get_object_or_404(Report, pk=pk)
 
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'inline; filename="report_{pk}.pdf"'
+
+    filename = f'{report.work_date.strftime("%Y%m%d")}_在宅日報.pdf'
+    encoded_filename = quote(filename)
+
+    response['Content-Disposition'] = (
+        f"inline; filename*=UTF-8''{encoded_filename}"
+    )
     
 
     doc = SimpleDocTemplate(
@@ -367,6 +374,13 @@ def report_pdf(request, pk):
     summary_text = (report.summary or '')
     summary_text = summary_text.replace('\r\n', '\n').replace('\r', '')
     summary_text = summary_text.replace('\n', '<br/>')
+
+    def to_paragraph(text):
+        text = text or ''
+        text = text.replace('\r\n', '\n')
+        text = text.replace('\r', '')
+        text = text.replace('\n', '<br/>')
+        return Paragraph(text, normal_style)
 
     # ==========
     # 共通幅
@@ -451,28 +465,28 @@ def report_pdf(request, pk):
     )
 
     body_data = [
-        ['目標', report.goal or ''],
-        ['タスク', task_text],
+        ['目標', to_paragraph(report.goal)],
+        ['タスク', to_paragraph(task_text)],
         ['業務内容', '時間', '業務詳細'],
-        ['', report.work_time1 or '', report.work_detail1 or ''],
-        ['', report.work_time2 or '', report.work_detail2 or ''],
-        ['', report.work_time3 or '', report.work_detail3 or ''],
-        ['', report.work_time4 or '', report.work_detail4 or ''],
-        ['総括', Paragraph(summary_text, normal_style)],
+        ['', report.work_time1 or '', to_paragraph(report.work_detail1)],
+        ['', report.work_time2 or '', to_paragraph(report.work_detail2)],
+        ['', report.work_time3 or '', to_paragraph(report.work_detail3)],
+        ['', report.work_time4 or '', to_paragraph(report.work_detail4)],
+        ['総括', to_paragraph(report.summary)],
     ]
 
     body_table = Table(
         body_data,
-        colWidths=[20 * mm, 45 * mm, 115 * mm],
+        colWidths=[20 * mm, 30 * mm, 130 * mm],
         rowHeights=[
-            None,       # 目標
-            22 * mm,    # タスク
-            None,       # 業務内容ヘッダ
             None,
             None,
             None,
             None,
-            45 * mm,       # 総括
+            None,
+            None,
+            None,
+            None,
         ]
     )
 
@@ -480,28 +494,16 @@ def report_pdf(request, pk):
         ('GRID', (0, 0), (-1, -1), 1.2, colors.black),
         ('FONTNAME', (0, 0), (-1, -1), PDF_FONT),
         ('FONTSIZE', (0, 0), (-1, -1), 11),
-        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('VALIGN', (0, 0), (-1, -1), 'TOP'),
 
-        # 目標
         ('SPAN', (1, 0), (2, 0)),
-        ('ALIGN', (0, 0), (0, 0), 'CENTER'),
-
-        # タスク
         ('SPAN', (1, 1), (2, 1)),
-        ('ALIGN', (0, 1), (0, 1), 'CENTER'),
-
-        # 業務内容 左縦結合
         ('SPAN', (0, 2), (0, 6)),
-        ('ALIGN', (0, 2), (0, 6), 'CENTER'),
+        ('SPAN', (1, 7), (2, 7)),
 
-        # 業務内容ヘッダ
+        ('ALIGN', (0, 0), (0, 7), 'CENTER'),
         ('ALIGN', (1, 2), (2, 2), 'CENTER'),
 
-        # 総括
-        ('SPAN', (1, 7), (2, 7)),
-        ('ALIGN', (0, 7), (0, 7), 'CENTER'),
-
-        # テキスト寄せ
         ('LEFTPADDING', (1, 0), (-1, -1), 8),
         ('RIGHTPADDING', (1, 0), (-1, -1), 8),
         ('TOPPADDING', (0, 0), (-1, -1), 6),
@@ -509,16 +511,17 @@ def report_pdf(request, pk):
     ]))
 
     elements.append(body_table)
-
     doc.build(elements)
     return response
 
 def signup_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
+
         if form.is_valid():
             form.save()
             return redirect('login')
+
     else:
         form = SignUpForm()
 
@@ -526,8 +529,10 @@ def signup_view(request):
         'form': form
     })
 
+
 def user_select(request):
-        return render(request, 'reports/user_select.html')
+    return render(request, 'reports/user_select.html')
+
 
 class ReportLoginView(LoginView):
     template_name = 'reports/login.html'
@@ -537,7 +542,12 @@ class ReportLoginView(LoginView):
 
         if user.is_staff:
             logout(self.request)
-            messages.error(self.request, '管理者は管理者ログイン画面からログインしてください。')
+
+            messages.error(
+                self.request,
+                '管理者は管理者ログイン画面からログインしてください。'
+            )
+
             return redirect('admin_login')
 
         return super().form_valid(form)

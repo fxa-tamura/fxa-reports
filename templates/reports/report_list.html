@@ -5,11 +5,6 @@
 <p>現在のログインユーザー: {{ request.user.username }}</p>
 <h1>日報一覧</h1>
 
-<form action="{% url 'logout' %}" method="post" style="margin-bottom: 16px;">
-    {% csrf_token %}
-    <button type="submit">ログアウト</button>
-</form>
-
 <p>
     <a href="{% url 'report_create' %}" class="create-btn">日報を作成</a>
 </p>
@@ -53,4 +48,10 @@
     <a href="?page={{ page_obj.paginator.num_pages }}">最後</a>
     {% endif %}
 </div>
+
+<form action="{% url 'logout' %}" method="post" style="margin-bottom: 16px;">
+    {% csrf_token %}
+    <button type="submit">ログアウト</button>
+</form>
+
 {% endblock %}

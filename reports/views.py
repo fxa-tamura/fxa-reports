@@ -225,6 +225,15 @@ def report_update(request, pk):
 
 @login_required
 def report_delete(request, pk):
+
+    # デモ管理者は削除禁止
+    if request.user.username == 'demo_admin':
+        messages.error(
+            request,
+            'デモ管理者は削除できません。'
+        )
+        return redirect('admin_report_list')
+
     if request.user.is_staff:
         report = get_object_or_404(Report, pk=pk)
     else:

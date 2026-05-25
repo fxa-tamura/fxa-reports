@@ -126,10 +126,11 @@ td {
 }
 
 td {
-    word-break: break-word;
+    word-break: normal;
 }
 
 .deleted-badge {
+    display: inline-block;
     margin-left: 8px;
     padding: 4px 8px;
     background-color: #e74c3c;
@@ -137,4 +138,196 @@ td {
     font-size: 12px;
     border-radius: 10px;
     font-weight: bold;
+    white-space: nowrap;
+}
+
+/* 管理者日報一覧 固定幅対応 */
+.admin-report-table {
+    width: 1320px;
+    min-width: 1320px;
+
+    table-layout: fixed;
+
+    border-collapse: collapse;
+
+    border: 1px solid #333;
+}
+
+/* 列幅 */
+.admin-report-table .col-date {
+    width: 170px;
+}
+
+.admin-report-table .col-name {
+    width: 130px;
+}
+
+.admin-report-table .col-department {
+    width: 360px;
+}
+
+.admin-report-table .col-goal {
+    width: 450px;
+}
+
+.admin-report-table .col-action {
+    width: 210px;
+}
+
+/* セル */
+.admin-report-table th,
+.admin-report-table td {
+    border: 1px solid #333;
+
+    padding: 10px;
+
+    vertical-align: middle;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    box-sizing: border-box;
+}
+
+/* 操作列 */
+.admin-report-table td:last-child {
+    text-align: center;
+}
+
+/* ボタン */
+.btn {
+    display: inline-block;
+
+    padding: 5px 8px;
+
+    border-radius: 5px;
+
+    text-decoration: none;
+
+    color: white;
+
+    font-size: 13px;
+
+    margin-right: 4px;
+
+    white-space: nowrap;
+}
+
+/* 削除済み */
+.deleted-badge {
+    display: inline-flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    width: 50px;
+
+    height: 30px;
+
+    background-color: #e74c3c;
+
+    color: white;
+
+    font-size: 10px;
+
+    line-height: 1.1;
+
+    border-radius: 5px;
+
+    font-weight: bold;
+
+    padding: 2px;
+
+    box-sizing: border-box;
+
+    vertical-align: middle;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: 48px 48px 50px;
+    column-gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+.deleted-badge-placeholder {
+    display: inline-block;
+    width: 50px;
+    height: 30px;
+}
+
+/* ==========================
+   一般ユーザー 日報一覧
+========================== */
+
+.user-report-table {
+    width: 1320px;
+    min-width: 1320px;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid #333;
+}
+
+/* 作業日 */
+.user-report-table th:nth-child(1),
+.user-report-table td:nth-child(1) {
+    width: 180px;
+}
+
+/* 目標 */
+.user-report-table th:nth-child(2),
+.user-report-table td:nth-child(2) {
+    width: 900px;
+}
+
+/* 操作 */
+.user-report-table th:nth-child(3),
+.user-report-table td:nth-child(3) {
+    width: 180px;
+    text-align: center;
+}
+
+/* セル共通 */
+.user-report-table th,
+.user-report-table td {
+    border: 1px solid #333;
+    padding: 10px;
+    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-sizing: border-box;
+}
+
+/* 編集・削除 */
+.user-report-table td:last-child a {
+    display: inline-block;
+    min-width: 48px;
+    margin: 0 6px;
+    text-align: center;
+}
+
+/* 一般ユーザー 操作ボタン */
+
+.user-report-table td:last-child {
+    text-align: center;
+}
+
+.user-report-table td:last-child .btn {
+    display: inline-block;
+
+    min-width: 60px;
+
+    margin: 0 4px;
+
+    padding: 6px 1px;
+
+    font-size: 13px;
 }

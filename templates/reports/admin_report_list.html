@@ -8,14 +8,26 @@
 <form method="get" style="margin-bottom: 20px;">
     <select name="user">
         <option value="">全ユーザー</option>
+
         {% for u in users %}
-        <option value="{{ u.id }}">{{ u.username }}</option>
+        <option value="{{ u.id }}">
+            {{ u.username }}
+        </option>
         {% endfor %}
     </select>
+
     <button type="submit">絞り込み</button>
 </form>
 
-<table border="1" style="border-collapse: collapse; width: 100%;">
+<table class="admin-report-table">
+    <colgroup>
+        <col class="col-date">
+        <col class="col-name">
+        <col class="col-department">
+        <col class="col-goal">
+        <col class="col-action">
+    </colgroup>
+
     <thead>
         <tr>
             <th>作業日</th>
@@ -25,6 +37,7 @@
             <th>操作</th>
         </tr>
     </thead>
+
     <tbody>
         {% for report in page_obj %}
         <tr>
@@ -33,11 +46,20 @@
             <td>{{ report.department }}</td>
             <td>{{ report.goal }}</td>
             <td>
-                <a href="{% url 'report_delete' report.pk %}" class="btn delete">削除</a>
-                <a href="{% url 'report_pdf' report.pk %}" class="btn pdf">PDF</a>
-                {% if report.is_deleted %}
-                <span class="deleted-badge">作成者削除済み</span>
-                {% endif %}
+                <div class="action-buttons">
+                    <a href="{% url 'report_delete' report.pk %}" class="btn delete">削除</a>
+
+                    <a href="{% url 'report_pdf' report.pk %}" class="btn pdf">PDF</a>
+
+                    {% if report.is_deleted %}
+                    <span class="deleted-badge">
+                        作成者<br>
+                        削除済
+                    </span>
+                    {% else %}
+                    <span class="deleted-badge-placeholder"></span>
+                    {% endif %}
+                </div>
             </td>
         </tr>
         {% endfor %}

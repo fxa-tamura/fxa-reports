@@ -580,3 +580,7 @@ class AdminLogoutView(LogoutView):
 
 class ReportLogoutView(LogoutView):
     next_page = '/reports/login/'
+
+@login_required
+def skill_sheet_create(request):
+     return render(request, 'reports/skill_sheet_create.html')

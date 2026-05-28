@@ -13,6 +13,7 @@ urlpatterns = [
     # ===== 一般ユーザー =====
     path('list/', views.report_list, name='report_list'),
     path('create/', views.report_create, name='report_create'),
+    path('skill-sheet/create/', views.skill_sheet_create, name='skill_sheet_create'),
     path('<int:pk>/edit/', views.report_update, name='report_update'),
     path('<int:pk>/delete/', views.report_delete, name='report_delete'),
     path('logout/', views.ReportLogoutView.as_view(), name='logout'),

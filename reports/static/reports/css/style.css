@@ -331,3 +331,126 @@ td {
 
     font-size: 13px;
 }
+
+/* ==========================
+   日報 作成・編集フォーム調整
+========================== */
+
+/* 入力欄の幅計算を安定させる */
+input,
+textarea,
+select {
+    box-sizing: border-box;
+}
+
+/* 作業日：半分程度 */
+input[type="date"] {
+    width: 220px;
+    max-width: 220px;
+}
+
+/* 時間：半分程度 */
+input[type="time"] {
+    width: 140px;
+    max-width: 140px;
+}
+
+/* 目標：入力文字が枠いっぱい見えるようにする */
+input[name="goal"],
+textarea[name="goal"] {
+    width: 100%;
+    max-width: 900px;
+    padding: 12px;
+}
+
+/* 業務詳細：広げる */
+textarea[name^="work_detail"] {
+    width: 100%;
+    max-width: 900px;
+    min-height: 120px;
+    padding: 12px;
+}
+
+/* 総括：広げる */
+textarea[name="summary"] {
+    width: 100%;
+    max-width: 900px;
+    min-height: 160px;
+    padding: 12px;
+}
+
+/* textarea共通 */
+textarea {
+    line-height: 1.6;
+}
+
+/* ==========================
+   日報 作成・編集フォーム全体
+========================== */
+
+.report-form-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.report-form-table th,
+.report-form-table td {
+    border: 1px solid #333;
+    padding: 10px;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+/* 左の見出し列 */
+.report-form-table th:first-child {
+    width: 180px;
+}
+
+/* 作業日入力欄 */
+.report-form-table input[name="work_date"] {
+    width: 220px;
+    max-width: 220px;
+}
+
+/* 目標・タスク・総括は横幅を広く */
+.report-form-table input[name="goal"],
+.report-form-table input[name^="task"],
+.report-form-table textarea[name="summary"] {
+    width: 100%;
+    max-width: 900px;
+}
+
+/* 業務内容：時間列 */
+.report-form-table input[name^="work_time"] {
+    width: 220px;
+    max-width: 220px;
+}
+
+/* 業務内容：業務詳細欄 */
+.report-form-table input[name^="work_detail"],
+.report-form-table textarea[name^="work_detail"] {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* textareaの見えるエリア調整 */
+.report-form-table textarea {
+    box-sizing: border-box;
+    padding: 12px;
+    line-height: 1.6;
+}
+
+/* 業務内容の「時間」列 */
+.report-form-table tr td:first-child {
+    width: 260px;
+}
+
+/* 業務詳細列 */
+.report-form-table tr td[colspan="2"] {
+    width: auto;
+}
+
+.report-form-table input[name="employee_name"] {
+    width: 260px;
+    max-width: 260px;
+}

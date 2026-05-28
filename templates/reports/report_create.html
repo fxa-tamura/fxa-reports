@@ -7,7 +7,7 @@
 <form method="post">
     {% csrf_token %}
 
-    <table border="1" style="border-collapse: collapse; width: 100%;">
+    <table class="report-form-table">
         <tr>
             <th>所属</th>
             <td>{{ form.department }}</td>
@@ -21,14 +21,6 @@
         <tr>
             <th>目標</th>
             <td colspan="3">{{ form.goal }}</td>
-        </tr>
-        <tr>
-            <th>タスク</th>
-            <td colspan="3">
-                ・{{ form.task1 }}<br>
-                ・{{ form.task2 }}<br>
-                ・{{ form.task3 }}
-            </td>
         </tr>
         <tr>
             <th rowspan="5">業務内容</th>

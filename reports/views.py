@@ -29,8 +29,8 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Spacer
 from reportlab.lib.units import mm
 
 # Local
-from .forms import ReportForm, SignUpForm
-from .models import Report
+from .forms import ReportForm, SignUpForm, SkillSheetForm
+from .models import Report, SkillSheet
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -583,4 +583,20 @@ class ReportLogoutView(LogoutView):
 
 @login_required
 def skill_sheet_create(request):
-     return render(request, 'reports/skill_sheet_create.html')
+    skill_sheet = SkillSheet.objects.filter(user=request.user).first()
+
+    if request.method == 'POST':
+        form = SkillSheetForm(request.POST, instance=skill_sheet)
+
+        if form.is_valid():
+            skill_sheet = form.save(commit=False)
+            skill_sheet.user = request.user
+            skill_sheet.save()
+
+            return redirect('skill_sheet_create')
+    else:
+        form = SkillSheetForm(instance=skill_sheet)
+
+    return render(request, 'reports/skill_sheet_create.html', {
+        'form': form
+    })

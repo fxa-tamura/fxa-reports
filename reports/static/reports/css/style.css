@@ -1,3 +1,7 @@
+/* ==========================
+   共通
+========================== */
+
 .hd {
     background-color: #1f337f;
     height: 90px;
@@ -60,11 +64,13 @@ select {
     border-radius: 6px;
     font-size: 14px;
     background: #ffffff;
+    box-sizing: border-box;
 }
 
 textarea {
     min-height: 140px;
     resize: vertical;
+    line-height: 1.6;
 }
 
 .errorlist {
@@ -93,12 +99,17 @@ textarea {
 
 .btn {
     display: inline-block;
-    padding: 5px 10px;
+    padding: 5px 8px;
     border-radius: 5px;
     text-decoration: none;
     color: white;
-    font-size: 14px;
-    margin-right: 5px;
+    font-size: 13px;
+    margin-right: 4px;
+    white-space: nowrap;
+}
+
+.btn:hover {
+    opacity: 0.8;
 }
 
 .delete {
@@ -107,10 +118,6 @@ textarea {
 
 .pdf {
     background-color: #1f337f;
-}
-
-.btn:hover {
-    opacity: 0.8;
 }
 
 table {
@@ -130,18 +137,41 @@ td {
 }
 
 .deleted-badge {
-    display: inline-block;
-    margin-left: 8px;
-    padding: 4px 8px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 30px;
     background-color: #e74c3c;
     color: white;
-    font-size: 12px;
-    border-radius: 10px;
+    font-size: 10px;
+    line-height: 1.1;
+    border-radius: 5px;
     font-weight: bold;
-    white-space: nowrap;
+    padding: 2px;
+    box-sizing: border-box;
+    vertical-align: middle;
 }
 
-/* 管理者日報一覧 固定幅対応 */
+.deleted-badge-placeholder {
+    display: inline-block;
+    width: 50px;
+    height: 30px;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: 48px 48px 50px;
+    column-gap: 8px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==========================
+   管理者日報一覧
+========================== */
+
 .admin-report-table {
     width: 1320px;
     min-width: 1320px;
@@ -192,75 +222,8 @@ td {
     box-sizing: border-box;
 }
 
-/* 操作列 */
 .admin-report-table td:last-child {
     text-align: center;
-}
-
-/* ボタン */
-.btn {
-    display: inline-block;
-
-    padding: 5px 8px;
-
-    border-radius: 5px;
-
-    text-decoration: none;
-
-    color: white;
-
-    font-size: 13px;
-
-    margin-right: 4px;
-
-    white-space: nowrap;
-}
-
-/* 削除済み */
-.deleted-badge {
-    display: inline-flex;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    align-items: center;
-
-    width: 50px;
-
-    height: 30px;
-
-    background-color: #e74c3c;
-
-    color: white;
-
-    font-size: 10px;
-
-    line-height: 1.1;
-
-    border-radius: 5px;
-
-    font-weight: bold;
-
-    padding: 2px;
-
-    box-sizing: border-box;
-
-    vertical-align: middle;
-}
-
-.action-buttons {
-    display: grid;
-    grid-template-columns: 48px 48px 50px;
-    column-gap: 8px;
-    justify-content: center;
-    align-items: center;
-}
-
-.deleted-badge-placeholder {
-    display: inline-block;
-    width: 50px;
-    height: 30px;
 }
 
 /* ==========================
@@ -333,15 +296,8 @@ td {
 }
 
 /* ==========================
-   日報 作成・編集フォーム調整
+   日報フォーム
 ========================== */
-
-/* 入力欄の幅計算を安定させる */
-input,
-textarea,
-select {
-    box-sizing: border-box;
-}
 
 /* 作業日：半分程度 */
 input[type="date"] {
@@ -378,15 +334,6 @@ textarea[name="summary"] {
     min-height: 160px;
     padding: 12px;
 }
-
-/* textarea共通 */
-textarea {
-    line-height: 1.6;
-}
-
-/* ==========================
-   日報 作成・編集フォーム全体
-========================== */
 
 .report-form-table {
     width: 100%;
@@ -453,4 +400,49 @@ textarea {
 .report-form-table input[name="employee_name"] {
     width: 260px;
     max-width: 260px;
+}
+
+/* ==========================
+   スキルシート
+========================== */
+
+.skill-sheet-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.skill-sheet-table th,
+.skill-sheet-table td {
+    border: 1px solid #333;
+    padding: 8px;
+    vertical-align: middle;
+    box-sizing: border-box;
+}
+
+.skill-sheet-table th {
+    text-align: center;
+    font-weight: bold;
+}
+
+.skill-sheet-table input,
+.skill-sheet-table textarea {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.career-header th {
+    background-color: #ffc000;
+    text-align: center;
+}
+
+.work-code-list {
+    text-align: left;
+    line-height: 1.8;
+}
+
+.remarks-label {
+    font-weight: bold;
+    margin-bottom: 6px;
 }

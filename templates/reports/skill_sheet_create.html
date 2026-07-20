@@ -1,0 +1,144 @@
+{% extends 'reports/base.html' %}
+
+{% block title %}スキルシート登録{% endblock %}
+
+{% block content %}
+<p>現在のログインユーザー: {{ request.user.username }}</p>
+<h1>スキルシート登録</h1>
+
+<form method="post">
+    {% csrf_token %}
+
+    <table class="skill-sheet-table">
+        <tr>
+            <th>カナ</th>
+            <td colspan="2">{{ form.kana }}</td>
+            <th>生年月日</th>
+            <td>{{ form.birth_date }}</td>
+            <th>年齢</th>
+            <td>{{ form.age }}</td>
+            <th>性別</th>
+            <td>{{ form.gender }}</td>
+            <th>最寄り駅</th>
+            <td colspan="2">{{ form.nearest_station }}</td>
+        </tr>
+
+        <tr>
+            <th>氏名</th>
+            <td colspan="11">{{ form.name }}</td>
+        </tr>
+
+        <tr>
+            <th>最終学歴</th>
+            <td colspan="11">{{ form.education }}</td>
+        </tr>
+
+        <tr>
+            <th>資格</th>
+            <td colspan="11">{{ form.qualification }}</td>
+        </tr>
+
+        <tr class="career-header">
+            <th rowspan="2">項番</th>
+            <th rowspan="2" colspan="2">業務名</th>
+            <th rowspan="2" colspan="2">作業内容</th>
+            <th rowspan="2" colspan="2">機種・OS</th>
+            <th rowspan="2" colspan="2">言語・DB・ツール</th>
+            <th colspan="3">期間</th>
+        </tr>
+
+        <tr class="career-header">
+            <th>From</th>
+            <th>To</th>
+            <th>Total</th>
+        </tr>
+
+        <tr class="career-row">
+            <td>1</td>
+            <td colspan="2"><input type="text" name="project_name_1"></td>
+            <td colspan="2"><input type="text" name="work_detail_1"></td>
+            <td colspan="2"><input type="text" name="os_1"></td>
+            <td colspan="2"><input type="text" name="tools_1"></td>
+            <td><input type="text" name="start_date_1" placeholder="2026/4"></td>
+            <td><input type="text" name="end_date_1" placeholder="2026/4"></td>
+            <td><input type="text" name="total_1" placeholder="1年3ヶ月"></td>
+        </tr>
+
+        <tr>
+            <th>作業内容</th>
+            <td colspan="11" class="work-code-list">
+                ①調査・分析　②要件定義　③基本設計　④詳細設計　⑤プログラム仕様書　⑥製造・単体テスト　⑦結合テスト<br>
+                ⑧システムテスト　⑨運用管理　⑩ユーザー支援　⑪その他
+            </td>
+        </tr>
+
+        <tr>
+            <th>備考</th>
+            <td colspan="11">
+                <div class="remarks-label">◆自己PR</div>
+                {{ form.self_pr }}
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <button type="submit">スキルシートを登録</button>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const table = document.querySelector('.skill-sheet-table');
+        let rowCount = 1;
+        const maxRows = 24;
+
+        function addRowIfNeeded() {
+
+            const rows = document.querySelectorAll('.career-row');
+            const lastRow = rows[rows.length - 1];
+
+            const inputs = lastRow.querySelectorAll('input');
+
+            const hasValue = Array.from(inputs).some(input =>
+                input.value.trim() !== ''
+            );
+
+            if (!hasValue || rowCount >= maxRows) {
+                return;
+            }
+
+            rowCount++;
+
+            const newRow = document.createElement('tr');
+            newRow.classList.add('career-row');
+
+            newRow.innerHTML = `
+            <td>${rowCount}</td>
+            <td colspan="2"><input type="text" name="project_name_${rowCount}"></td>
+            <td colspan="2"><input type="text" name="work_detail_${rowCount}"></td>
+            <td colspan="2"><input type="text" name="os_${rowCount}"></td>
+            <td colspan="2"><input type="text" name="tools_${rowCount}"></td>
+            <td><input type="text" name="start_date_${rowCount}" placeholder="2026/4"></td>
+            <td><input type="text" name="end_date_${rowCount}" placeholder="2026/4"></td>
+            <td><input type="text" name="total_${rowCount}" placeholder="1年3ヶ月"></td>
+        `;
+
+            rows[rows.length - 1].after(newRow);
+
+            newRow.querySelectorAll('input').forEach(input => {
+                input.addEventListener('input', addRowIfNeeded);
+            });
+        }
+
+        document.querySelectorAll('.career-row input').forEach(input => {
+            input.addEventListener('input', addRowIfNeeded);
+        });
+
+    });
+</script>
+
+<p>
+    <a href="{% url 'report_list' %}">一覧へ戻る</a>
+</p>
+
+{% endblock %}

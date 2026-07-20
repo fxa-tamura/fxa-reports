@@ -3,6 +3,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Report
+from .models import SkillSheet
 
 
 class SignUpForm(UserCreationForm):
@@ -68,3 +69,34 @@ class ReportForm(forms.ModelForm):
 
     def clean_work_time4(self):
         return self._validate_work_time_format(self.cleaned_data.get('work_time4'))
+
+class SkillSheetForm(forms.ModelForm):
+    birth_date = forms.DateField(
+        required=False,
+        input_formats=['%Y-%m-%d'],
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
+
+    class Meta:
+        model = SkillSheet
+
+        fields = [
+            'name',
+            'kana',
+            'birth_date',
+            'age',
+            'gender',
+            'nearest_station',
+            'education',
+            'qualification',
+            'self_pr',
+            'skill_summary',
+            'career_summary',
+        ]
+
+        widgets = {
+            'qualification': forms.Textarea(attrs={'rows': 4}),
+            'self_pr': forms.Textarea(attrs={'rows': 5}),
+            'skill_summary': forms.Textarea(attrs={'rows': 5}),
+            'career_summary': forms.Textarea(attrs={'rows': 5}),
+        }
